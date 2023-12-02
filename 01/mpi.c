@@ -34,21 +34,16 @@ int main(int c, char **v)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    // Get start, end
-    // per_array = count / size
-    // start idx = rank * per_array
-    // For i = start, i < end; i++
-    //   process
     int local_sum = 0;
     int per = count / size;
     int start_idx = per * rank;
     for(int i = start_idx; i < start_idx + per; i++) {
-      local_sum += process(input[start_idx+i]);
+      local_sum += process(input[i]);
     }
     MPI_Reduce(&local_sum, &total, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
-      printf("Sum: %d\n", total);
+      printf("Sum: %i\n", total);
     }
 
     MPI_Finalize();

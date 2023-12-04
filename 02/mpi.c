@@ -48,29 +48,32 @@ int process(char *ln) {
   register char *tmp;
   // Game <num>:
   id = atoi(strtok(ln, "Game :"));
-
   tmp = strtok(NULL, " ");
+
+  int rmin = 0;
+  int bmin = 0;
+  int gmin = 0;
   while (tmp != NULL) {
     int color_num = atoi(tmp);
     char ripharambe = color(strtok(NULL, ",;"));
     switch (ripharambe) {
     case 'b':
-      if (color_num > blue)
-	return 0;
+      if (color_num > bmin)
+	bmin = color_num;
       break;
     case 'r':
-      if (color_num > red)
-	return 0;
+      if (color_num > rmin)
+	rmin = color_num;
       break;
     case 'g':
-      if (color_num > green)
-	return 0;
+      if (color_num > gmin)
+	gmin = color_num;
       break;
     }
     //printf("Color: %c %i\n", ripharambe, color_num);
     tmp = strtok(NULL, " ");
   }
-  return id;
+  return bmin*rmin*gmin;
 }
 
 int main(int c, char **v)
